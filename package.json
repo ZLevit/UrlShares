@@ -1,5 +1,6 @@
 {
   "name": "firebase-url-list",
+  "homepage": "https://zlevit.github.io/UrlShares",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

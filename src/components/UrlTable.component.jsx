@@ -1,6 +1,6 @@
-import "../styles/datatable.scss";
 import { LoadPanel } from 'devextreme-react/load-panel';
-import { userColumns } from "../models/UserInfo";
+import { Container, Button, Row, Col } from "react-bootstrap"
+import { urlColumnsInfo } from "../models/urlInfo";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -10,9 +10,9 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
-import DevDataGrid from "./DevDataGrid.component";
+import  GenericGrid  from "./GenericGrid.component";
 
-const UsersDataTable = () => {
+const UrlsTable = () => {
   const [data, setData] = useState([]);
   const [clipboardContent, setClipboardContent] = useState('');
   const [isClipboardEmpty, setIsClipboardEmpty] = useState(true);
@@ -40,7 +40,7 @@ const UsersDataTable = () => {
 
     // LISTEN (REALTIME)
     const unsub = onSnapshot(      
-      collection(db, "users"),
+      collection(db, "urls"),
       (snapShot) => {
         setDataLoadingError('');
         setDataLoading(true);
@@ -79,50 +79,32 @@ const UsersDataTable = () => {
       width: 200,
       renderCell: (params) => {
         return (
-          <div className="cellAction">
+          <div  className="flex gap-1">
             <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+              <Button className="viewButton">View</Button>
             </Link>
-            <div
-              className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              Delete
-            </div>
+            <Button  className="deleteButton" onClick={() => handleDelete(params.row.id)}>Delete</Button>
           </div>
         );
       },
     },
   ];
-  let useDevExtremeDataGrid = true;
+  
   return (
-    <div className="datatable">
-
-      <div className="datatableTitle">
-        Add New User
-        <div>
-          <Link to="/users/new-clipboard" className="link" onClick={handleLinkClick}>
+    <Container fluid style={{ backgroundColor: 'blue' }}>              
+         <Row  style={{ backgroundColor: 'gray', paddingTop:'5px', paddingBottom: '5px' }}>
+        <Col className="d-flex  gap-3 justify-content-end" style={{ backgroundColor: 'yellow'}} >
+          <Button to="/users/new-clipboard" className="link" onClick={handleLinkClick}>
             Copy from Clipboard
-          </Link>
-          <span style={{ margin: '0 10px' }}></span>
-          <Link to="/users/new" className="link">
+          </Button>          
+          <Button to="/users/new" className="link">
             Add New
-          </Link>
-          <span style={{ margin: '0 10px' }}></span>
-          <Link to="/users/new" className="link">
-            Delete all
-          </Link>
-          <span style={{ margin: '0 10px' }}></span>
-          {isClipboardEmpty ? (
-            <p>Clipboard is empty</p>
-          ) : (
-            <p>Clipboard content: {clipboardContent}</p>
-          )}
-        </div>
-      </div>
+          </Button>                    
+          </Col>
+        </Row>
       
-      
-      
+        <Row  style={{ backgroundColor: 'red', paddingTop:'5px', paddingBottom: '10px' }}>
+        <Col className="d-flex justify-content-end" style={{ backgroundColor: 'green' }}>
       <LoadPanel
          position={position}     
          visible={dataLoading}
@@ -131,12 +113,13 @@ const UsersDataTable = () => {
          showPane={true}
          hideOnOutsideClick={false}
       />
-      <div id="DataGrid" className="height-full" >
-      <DevDataGrid columns={userColumns.concat(actionColumn)} dataSrc={data} /> 
+      <div id="DataGrid">
+        <GenericGrid  columns={urlColumnsInfo.concat(actionColumn)} dataSrc={data} /> 
       </div>
-      
-    </div>
+      </Col>
+       </Row>
+    </Container>
   );
 };
 
-export default UsersDataTable;
+export default UrlsTable;

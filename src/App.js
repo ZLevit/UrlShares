@@ -7,11 +7,13 @@ import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
 
 import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
+
+import LoginPageX from "./pages/LoginPage";
 import EntityPage from "./pages/EntityPage";
 import InputPage from "./pages/InputPage";
 import ProductsPage from "./pages/ProductsPage";
 import UsersPage from "./pages/UsersPage";
+import UrlsPage from "./pages/UrlsPage";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -27,12 +29,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route path="login" element={<LoginPage />} />
+            <Route path="login" element={<LoginPageX />} />            
             <Route
               index
               element={
                 <RequireAuth>
-                  <HomePage />
+                  <UrlsPage />
                 </RequireAuth>
               }
             />
